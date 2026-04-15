@@ -1,9 +1,12 @@
 import Link from "next/link"
-import React from "react"
 
-function Logo() {
+interface LogoProps {
+  url?: string
+}
+
+function Logo({ url = "/" }: LogoProps) {
   return (
-    <Link href="/" className="flex w-fit items-center gap-2">
+    <Link href={url} className="flex w-fit items-center gap-2">
       <div className="flex size-8 items-center justify-center rounded-md bg-primary">
         <div className="size-3 rounded-full bg-white" />
       </div>
