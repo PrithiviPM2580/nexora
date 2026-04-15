@@ -138,3 +138,9 @@
     transform: translateY(0);
   }
 }
+
+@layer utilities {
+  .fade-in-up {
+    animation: fade-in-up 500ms ease-out forwards;
+  }
+}
