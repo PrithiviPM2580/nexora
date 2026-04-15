@@ -44,7 +44,7 @@ function NavUser({ isLoading, user, isSigningOut, onSignOut }: NavUserProps) {
                 <Avatar className="h-8 w-8 rounded-lg border border-primary">
                   <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <div className="flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.name}</span>
                   <span className="truncate font-medium">{user?.email}</span>
                 </div>
@@ -70,7 +70,7 @@ function NavUser({ isLoading, user, isSigningOut, onSignOut }: NavUserProps) {
                     {user?.name?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.name}</span>
                   <span className="truncate font-medium">{user?.email}</span>
                 </div>
