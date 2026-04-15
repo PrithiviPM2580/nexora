@@ -14,6 +14,8 @@ import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
 import Logo from "../logo"
 import NavUser from "./nav-user"
+import NavMenu from "./nav-menu"
+import { NAV_MENUS } from "@/constants/index"
 
 function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
@@ -51,7 +53,9 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
         <hr className="mx-2 -mt-px border-border" />
       </SidebarHeader>
-      <SidebarContent className="overflow-x-hidden px-2 pt-2"></SidebarContent>
+      <SidebarContent className="overflow-x-hidden px-2 pt-2">
+        <NavMenu items={NAV_MENUS} />
+      </SidebarContent>
       <SidebarFooter>
         <hr className="mx-2 -mt-px border-border" />
         <NavUser
