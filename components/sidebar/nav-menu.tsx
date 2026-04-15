@@ -20,7 +20,13 @@ function NavMenu({ items }: { items: NavMenusItem[] }) {
                 className="group/menu-button h-9 cursor-pointer rounded-md bg-linear-to-r font-medium hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
                 isActive={isActive}
                 onClick={() => router.push(item.url)}
-              ></SidebarMenuButton>
+              >
+                <item.icon
+                  className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
+                  size={22}
+                />
+                <span>{item.title}</span>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           )
         })}
