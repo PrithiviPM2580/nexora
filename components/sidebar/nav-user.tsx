@@ -1,0 +1,84 @@
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "../ui/sidebar"
+import { RiLoader5Fill } from "@remixicon/react"
+import {
+  DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+} from "../ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "../ui/avatar"
+import { ChevronsUpDownIcon } from "lucide-react"
+
+interface NavUserProps {
+  isLoading: boolean
+  user: {
+    name: string
+    email: string
+  }
+  isSigningOut: boolean
+  onSignOut: () => void
+}
+
+function NavUser({ isLoading, user, isSigningOut, onSignOut }: NavUserProps) {
+  const { isMobile } = useSidebar()
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          {isLoading ? (
+            <RiLoader5Fill className="h-5 w-5 animate-spin" />
+          ) : (
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar className="h-8 w-8 rounded-lg border border-primary">
+                  <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{user?.name}</span>
+                  <span className="truncate font-medium">{user?.email}</span>
+                </div>
+                <ChevronsUpDownIcon />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+          )}
+          <DropdownMenuContent
+            className="min-w-56 rounded-lg"
+            side={isMobile ? "bottom" : "right"}
+            align="end"
+            sideOffset={4}
+            onCloseAutoFocus={(e) => {
+              if (isSigningOut) {
+                e.preventDefault()
+              }
+            }}
+          >
+            <DropdownMenuLabel className="p-0 font-normal">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <Avatar className="h-8 w-8 rounded-lg border border-primary">
+                  <AvatarFallback className="rounded-lg">
+                    {user?.name?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{user?.name}</span>
+                  <span className="truncate font-medium">{user?.email}</span>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  )
+}
+
+export default NavUser
