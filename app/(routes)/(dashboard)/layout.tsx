@@ -6,6 +6,7 @@ import FallbackSpinner from "@/components/fallback-spinner"
 import AppSidebar from "@/components/sidebar"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import MainContent from "./_common/main-content"
 
 async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({
@@ -20,7 +21,7 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset className="relative overflow-x-hidden pt-0">
-            {children}
+            <MainContent>{children}</MainContent>
           </SidebarInset>
         </SidebarProvider>
       </NuqsAdapter>
