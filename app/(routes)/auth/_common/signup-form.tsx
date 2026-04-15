@@ -25,10 +25,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RiLoader2Line } from "@remixicon/react"
 import Link from "next/link"
+import { useAuthToken } from "@/hooks/use-auth-token"
 
 function SignUpForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { setBearerToken } = useAuthToken()
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -50,7 +52,9 @@ function SignUpForm() {
         onRequest: () => {
           setIsLoading(true)
         },
-        onSuccess: () => {
+        onSuccess: (ctx) => {
+          const token = ctx.response.headers.get("set-auth-token")
+          if (token) setBearerToken(token)
           router.replace("/home")
           setIsLoading(false)
         },
