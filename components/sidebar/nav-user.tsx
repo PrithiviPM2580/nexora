@@ -4,12 +4,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "../ui/sidebar"
-import { RiLoader5Fill } from "@remixicon/react"
+import { RiLoader5Fill, RiLogoutBoxLine } from "@remixicon/react"
 import {
   DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
 } from "../ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { ChevronsUpDownIcon } from "lucide-react"
@@ -74,6 +76,18 @@ function NavUser({ isLoading, user, isSigningOut, onSignOut }: NavUserProps) {
                 </div>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="relative"
+              disabled={isSigningOut}
+              onClick={onSignOut}
+            >
+              <RiLogoutBoxLine className="text-muted-foreground/60" />
+              Logout
+              {isSigningOut && (
+                <RiLoader5Fill className="absolute right-2 h-4 w-4 animate-spin" />
+              )}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
