@@ -16,6 +16,7 @@ import Logo from "../logo"
 import NavUser from "./nav-user"
 import NavMenu from "./nav-menu"
 import { NAV_MENUS } from "@/constants/index"
+import NavNotes from "./nav-notes"
 
 function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
@@ -55,6 +56,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="overflow-x-hidden px-2 pt-2">
         <NavMenu items={NAV_MENUS} />
+        <NavNotes />
       </SidebarContent>
       <SidebarFooter>
         <hr className="mx-2 -mt-px border-border" />
