@@ -1,7 +1,7 @@
-import React from "react"
+import MainSection from "./_common/main-section"
 
-function Home() {
-  return <div>Home</div>
+async function Home() {
+  return <MainSection />
 }
 
 export default Home
