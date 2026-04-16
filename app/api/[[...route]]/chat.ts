@@ -5,6 +5,10 @@ import { getAuthUser } from "@/lib/hono/hono-middleware"
 import { HTTPException } from "hono/http-exception"
 import { prisma } from "@/lib/prisma"
 import { generateTitleForUserMessage } from "@/app/actions/action"
+import { createNote } from "@/lib/ai/tools/create-note"
+import { searchNote } from "@/lib/ai/tools/search-note"
+import { webSearch } from "@/lib/ai/tools/web-search"
+import { extractWebUrl } from "@/lib/ai/tools/extract-url"
 import {
   convertToModelMessages,
   stepCountIs,
@@ -81,6 +85,12 @@ export const chatRoute = new Hono().post(
         model: modelProvider,
         system: "",
         messages: modelMessages,
+        tools: {
+          createNote: createNote(user.id),
+          searchNote: searchNote(user.id),
+          webSearch: webSearch(),
+          extractWebUrl: extractWebUrl(),
+        },
         stopWhen: stepCountIs(5),
         toolChoice: "auto",
         onError: (error) => {
@@ -90,6 +100,7 @@ export const chatRoute = new Hono().post(
 
       return result.toUIMessageStreamResponse({
         sendSources: true,
+        originalMessages: newUiMessage,
         onFinish: async ({ messages, responseMessage }) => {
           console.log("Complete messages: ", messages.length, responseMessage)
           try {
