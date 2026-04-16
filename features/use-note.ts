@@ -83,7 +83,8 @@ export const useUpdateNote = () => {
       })
       return await response.json()
     },
-    onSuccess: (note) => {
+    onSuccess: () => {
+      toast.success("Change Saved!")
       queryClient.invalidateQueries({
         queryKey: ["notes"],
         refetchType: "all",

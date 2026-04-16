@@ -40,8 +40,8 @@ function NoteView({ noteId }: { noteId: string }) {
     mutate({
       id: noteId,
       json: {
-        title,
-        content,
+        title: title,
+        content: content,
       },
     })
   }
@@ -83,11 +83,11 @@ function NoteView({ noteId }: { noteId: string }) {
           className="min-h-[65vh] w-full resize-none border-none bg-transparent px-0 text-base leading-relaxed outline-none placeholder:text-muted-foreground/40 focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
-      <div className="sticky bottom-0 z-50 flex justify-end bg-background py-2">
+      <div className="sticky bottom-0 z-50 flex justify-end py-2">
         <Button
           onClick={handleUpdate}
           disabled={isPending || !noteId || !content}
-          className="cursor-pointer rounded-full px-10 text-lg disabled:opacity-75"
+          className="cursor-pointer rounded-full px-10 py-5 text-lg disabled:opacity-75"
           size={"lg"}
         >
           {isPending && <RiLoader5Fill className="h-7 w-7 animate-spin" />}

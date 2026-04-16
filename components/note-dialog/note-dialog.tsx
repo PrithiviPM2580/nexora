@@ -17,7 +17,7 @@ function NoteDialog() {
       }}
     >
       <SheetContent
-        className="w-full border-l p-0 sm:max-w-[50vw] lg:w-1/2"
+        className="border-l p-0 sm:max-w-[50vw] lg:w-1/2"
         side="right"
       >
         <SheetHeader className="border-b bg-muted px-4 py-2">
