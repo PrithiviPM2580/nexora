@@ -11,8 +11,10 @@ import {
 import { RiAddLine, RiFileTextLine, RiLoader5Fill } from "@remixicon/react"
 import { useCreateNote, useNotes } from "@/features/use-note"
 import LoaderOverlay from "../loader-overlay"
+import { useNoteId } from "@/hooks/use-note-id"
 
 function NavNotes() {
+  const { noteId, setNoteId } = useNoteId()
   const { data, isPending } = useNotes()
   const { mutate, isPending: isLoading } = useCreateNote()
 
@@ -47,12 +49,13 @@ function NavNotes() {
               </div>
             ) : (
               notes?.map((note) => {
-                // const isActive = note.id === noteId
+                const isActive = note.id === noteId
                 return (
                   <SidebarMenuItem key={note.id}>
                     <SidebarMenuButton
                       className="flex w-full items-center"
-                      onClick={() => {}}
+                      isActive={isActive}
+                      onClick={() => setNoteId(note.id)}
                     >
                       <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
                         <RiFileTextLine className="h-4 w-4 text-primary" />
