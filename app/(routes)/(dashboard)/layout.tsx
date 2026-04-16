@@ -7,6 +7,7 @@ import AppSidebar from "@/components/sidebar"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import MainContent from "./_common/main-content"
+import NoteDialog from "@/components/note-dialog/note-dialog"
 
 async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({
@@ -22,6 +23,7 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
           <AppSidebar />
           <SidebarInset className="relative overflow-x-hidden pt-0">
             <MainContent>{children}</MainContent>
+            <NoteDialog />
           </SidebarInset>
         </SidebarProvider>
       </NuqsAdapter>
