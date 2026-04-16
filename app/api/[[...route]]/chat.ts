@@ -1,6 +1,6 @@
 import { Hono } from "hono"
 import { zValidator } from "@hono/zod-validator"
-import { chatSchema } from "@/validator/chat"
+import { chatIdSchema, chatSchema } from "@/validator/chat"
 import { getAuthUser } from "@/lib/hono/hono-middleware"
 import { HTTPException } from "hono/http-exception"
 import { prisma } from "@/lib/prisma"
@@ -20,12 +20,10 @@ import { isProduction } from "better-auth"
 import { myProvider } from "@/lib/ai/providers"
 import { DEVELOPMENT_MODEL_ID } from "@/lib/ai/models"
 import { generateUUID } from "@/lib/utils"
+import { getSystemPrompt } from "@/lib/ai/prompt"
 
-export const chatRoute = new Hono().post(
-  "/",
-  zValidator("json", chatSchema),
-  getAuthUser,
-  async (c) => {
+export const chatRoute = new Hono()
+  .post("/", zValidator("json", chatSchema), getAuthUser, async (c) => {
     try {
       const user = c.get("user")
       const { id, message, selectedModelId, selectedToolName } =
@@ -83,7 +81,7 @@ export const chatRoute = new Hono().post(
 
       const result = streamText({
         model: modelProvider,
-        system: "",
+        system: getSystemPrompt(selectedToolName),
         messages: modelMessages,
         tools: {
           createNote: createNote(user.id),
@@ -124,5 +122,58 @@ export const chatRoute = new Hono().post(
       console.error("Error handling chat request:", error)
       throw new HTTPException(500, { message: "Internal Server Error" })
     }
-  }
-)
+  })
+  .get("/", getAuthUser, async (c) => {
+    try {
+      const user = c.get("user")
+      const chats = await prisma.chat.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: "desc" },
+      })
+
+      return c.json({
+        success: true,
+        data: chats,
+      })
+    } catch (error) {
+      console.log("Error fetching chats: ", error)
+      throw new HTTPException(500, { message: "Internal Server Error" })
+    }
+  })
+  .get("/:id", zValidator("param", chatIdSchema), getAuthUser, async (c) => {
+    try {
+      const user = c.get("user")
+      const { id } = c.req.valid("param")
+
+      const chat = await prisma.chat.findFirst({
+        where: { id, userId: user.id },
+        include: {
+          messages: {
+            orderBy: { createdAt: "desc" },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+
+      if (!chat) {
+        return c.json({ success: true, data: {} })
+      }
+
+      const uiMessages: UIMessage[] = chat.messages.map((m) => ({
+        id: m.id,
+        role: m.role as "user" | "assistant" | "system",
+        parts: m.parts as UIMessagePart<any, any>[],
+        metadata: { createdAt: m.createdAt },
+      }))
+
+      const chatWithMsg = {
+        ...chat,
+        messages: uiMessages,
+      }
+
+      return c.json({
+        success: true,
+        data: chatWithMsg,
+      })
+    } catch (error) {}
+  })
