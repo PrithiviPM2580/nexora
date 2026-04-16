@@ -35,14 +35,16 @@ function NoteView({ noteId }: { noteId: string }) {
     }
   }, [isLoading])
 
-  const handleUpdate = () => {}
-  mutate({
-    id: noteId,
-    json: {
-      title,
-      content,
-    },
-  })
+  const handleUpdate = () => {
+    if (!noteId) return
+    mutate({
+      id: noteId,
+      json: {
+        title,
+        content,
+      },
+    })
+  }
 
   const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {

@@ -1,7 +1,6 @@
 "use client"
 
 import { useNoteId } from "@/hooks/use-note-id"
-import React from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet"
 import NoteView from "./note-view"
 
@@ -10,12 +9,17 @@ function NoteDialog() {
 
   const isOpen = Boolean(noteId)
 
-  const handleClose = () => {
-    clearNoteId()
-  }
   return (
-    <Sheet open={isOpen} onOpenChange={handleClose}>
-      <SheetContent className="w-1/2 border-l p-0 sm:max-w-[50vw]" side="right">
+    <Sheet
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) clearNoteId()
+      }}
+    >
+      <SheetContent
+        className="w-full border-l p-0 sm:max-w-[50vw] lg:w-1/2"
+        side="right"
+      >
         <SheetHeader className="border-b bg-muted px-4 py-2">
           <SheetTitle />
         </SheetHeader>
