@@ -1,3 +1,5 @@
+"use client"
+
 import { useNote, useUpdateNote } from "@/features/use-note"
 import React, { useEffect, useRef, useState } from "react"
 import { RiLoader5Fill } from "@remixicon/react"
