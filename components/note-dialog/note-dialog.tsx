@@ -1,3 +1,5 @@
+"use client"
+
 import { useNoteId } from "@/hooks/use-note-id"
 import React from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet"
