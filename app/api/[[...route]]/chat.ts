@@ -15,6 +15,7 @@ import {
 import { isProduction } from "better-auth"
 import { myProvider } from "@/lib/ai/providers"
 import { DEVELOPMENT_MODEL_ID } from "@/lib/ai/models"
+import { generateUUID } from "@/lib/utils"
 
 export const chatRoute = new Hono().post(
   "/",
@@ -94,7 +95,7 @@ export const chatRoute = new Hono().post(
           try {
             await prisma.message.createMany({
               data: messages.map((m) => ({
-                id: m.id || "",
+                id: m.id || generateUUID(),
                 chatId: id,
                 role: m.role,
                 parts: JSON.parse(JSON.stringify(m.parts)),
@@ -103,7 +104,9 @@ export const chatRoute = new Hono().post(
               })),
               skipDuplicates: true,
             })
-          } catch (error) {}
+          } catch (error) {
+            console.log("Error saving messages to DB: ", error)
+          }
         },
       })
     } catch (error) {
